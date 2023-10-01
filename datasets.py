@@ -46,17 +46,17 @@ class MyDataset(Dataset):
         return len(self.y_datas)
 
     def __getitem__(self, index: Any) -> Any:
-        x = torch.from_numpy(self.x_datas[index])
-        y = torch.from_numpy(self.y_datas[index])
+        x = torch.from_numpy(self.x_datas[index]).to(torch.float32)
+        y = torch.from_numpy(self.y_datas[index]).to(torch.float32)
         return x, y
 
 
-def get_dataset(file_path):
+def get_dataset(file_path,batch_size):
     train_dataset = MyDataset(file_path, is_train=True)
     test_dataset = MyDataset(file_path, is_train=False)
 
-    train_loader = DataLoader(train_dataset, batch_size=16, shuffle=True, num_workers=2, pin_memory=True)
-    test_loader = DataLoader(test_dataset, batch_size=16, shuffle=True, num_workers=2, pin_memory=True)
+    train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True, num_workers=2, pin_memory=True)
+    test_loader = DataLoader(test_dataset, batch_size=batch_size, shuffle=True, num_workers=2, pin_memory=True)
 
     return train_loader, test_loader
 
